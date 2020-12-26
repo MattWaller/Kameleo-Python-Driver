@@ -55,11 +55,11 @@ class Kameleo_cli(object):
         # inits new profile based on the proxy or not.
         new_profile_create = self.new_profile(ip_dict,screen_size,base_profiles,proxyIP=proxyIP,proxyPort=proxyPort,proxyType=proxyType,deviceType=deviceType,language=language)
         # make request to server to initiate the new profile
-        r = requests.post(f"{host}/profiles/new",json=new_profile_create)
+        r = requests.post(f"{self.host}/profiles/new",json=new_profile_create)
         # get guid from request
         guid = json.loads(r.text)['id']
         # start up new profile
-        r = requests.get(f"{host}/profiles/{guid}/start")
+        r = requests.get(f"{self.host}/profiles/{guid}/start")
         if r.status_code == 200:
             print('successfully started driver..')
             driver = self.driverConnection(guid)
@@ -178,7 +178,7 @@ class Kameleo_cli(object):
         from selenium import webdriver
         from selenium.webdriver.remote.webdriver import WebDriver
         from selenium.webdriver.common.keys import Keys
-        driver =  webdriver.Remote(command_executor=f'{host}/webdriver', desired_capabilities={'kameleo:profileId':guid})
+        driver =  webdriver.Remote(command_executor=f'{self.host}/webdriver', desired_capabilities={'kameleo:profileId':guid})
         Keys = Keys
         return driver
 
